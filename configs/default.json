@@ -1,0 +1,7 @@
+{
+  "dataset_path": "data/dataset.npz",
+  "output_dir": "results",
+  "num_shards": 4,
+  "top_k": 10,
+  "batch_size": 8
+}
