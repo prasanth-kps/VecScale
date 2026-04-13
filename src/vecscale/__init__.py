@@ -1,0 +1,1 @@
+"""VecScale distributed vector retrieval prototype."""
