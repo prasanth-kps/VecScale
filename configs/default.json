@@ -1,5 +1,5 @@
 {
-  "dataset_path": "data/dataset.npz",
+  "dataset_path": "data/dataset.vsd",
   "output_dir": "results",
   "num_shards": 4,
   "top_k": 10,
