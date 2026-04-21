@@ -1,7 +1,10 @@
 {
-  "dataset_path": "data/dataset.vsd",
+  "dataset_dir": "data/dataset_cpp",
   "output_dir": "results",
   "num_shards": 4,
   "top_k": 10,
-  "batch_size": 8
+  "vector_dim": 128,
+  "num_vectors": 100000,
+  "num_queries": 1000,
+  "seed": 42
 }

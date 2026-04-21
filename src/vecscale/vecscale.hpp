@@ -1,0 +1,10 @@
+#pragma once
+
+#include "vecscale/aggregator.hpp"
+#include "vecscale/baselines.hpp"
+#include "vecscale/benchmark.hpp"
+#include "vecscale/compute.hpp"
+#include "vecscale/data.hpp"
+#include "vecscale/router.hpp"
+#include "vecscale/types.hpp"
+#include "vecscale/worker.hpp"
