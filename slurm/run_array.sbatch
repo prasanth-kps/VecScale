@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-cd "$HOME/vecscale_test"
+cd "$HOME/VecScale"
 mkdir -p logs data results
 
 module purge
