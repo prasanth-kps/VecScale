@@ -19,7 +19,6 @@ mkdir -p data results
 
 if type module >/dev/null 2>&1; then
   module purge || true
-  module load gnu15/15.1.0 cmake/4.1.0
 fi
 
 BACKEND="${VECSCALE_BACKEND:-openmp}"        # cpu|openmp|cuda
@@ -27,9 +26,16 @@ OMP_THREADS="${VECSCALE_OMP_THREADS:-${SLURM_CPUS_PER_TASK:-1}}"
 CMAKE_ARGS="-DVECSCALE_ENABLE_MPI=ON -DVECSCALE_ENABLE_OPENMP=ON"
 if [[ "${BACKEND}" == "cuda" ]]; then
   if type module >/dev/null 2>&1; then
-    module load nvidia/cuda/12.9.1 || true
+    module load gcc/14.3.0 cmake/4.1.0 nvidia/cuda/12.9.1
   fi
-  CMAKE_ARGS="${CMAKE_ARGS} -DVECSCALE_ENABLE_CUDA=ON"
+  export CC="$(which gcc)"
+  export CXX="$(which g++)"
+  export CUDAHOSTCXX="$(which g++)"
+  CMAKE_ARGS="${CMAKE_ARGS} -DVECSCALE_ENABLE_CUDA=ON -DCMAKE_CUDA_HOST_COMPILER=${CUDAHOSTCXX}"
+else
+  if type module >/dev/null 2>&1; then
+    module load gnu15/15.1.0 cmake/4.1.0
+  fi
 fi
 
 cmake -S . -B build ${CMAKE_ARGS}
