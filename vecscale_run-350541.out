@@ -31,3 +31,9 @@ Dataset written to data/dataset_cpp
 embeddings=100000 x 128
 queries=1000 x 128
 Launching single-process mode with backend=cuda
+=== C++ Benchmark Summary ===
+Backend: cuda
+OMP threads: 8
+Queries: 1000
+Baseline throughput (single-node exact): 16.627 qps
+shards=4 distributed_qps=4.52675 p50_ms=218.588 p95_ms=282.446
