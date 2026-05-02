@@ -14,8 +14,8 @@ Worker::Worker(std::size_t worker_id, Matrix shard_embeddings, IdArray shard_ids
     }
 }
 
-GlobalSearchResult Worker::search(const Matrix& queries, std::size_t top_k) const {
-    const SearchResult local = topk_cosine_similarity(queries, embeddings_, top_k);
+GlobalSearchResult Worker::search(const Matrix& queries, std::size_t top_k, const RuntimeConfig& config) const {
+    const SearchResult local = topk_cosine_similarity(queries, embeddings_, top_k, config);
     GlobalSearchResult out{};
     out.scores = local.scores;
     out.ids.resize(local.local_indices.size());

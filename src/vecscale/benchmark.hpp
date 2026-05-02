@@ -5,6 +5,10 @@
 
 namespace vecscale {
 
-BenchmarkSummary run_benchmark(QueryRouter& router, const Matrix& queries, std::size_t top_k);
+BenchmarkSummary run_benchmark(
+    QueryRouter& router,
+    const Matrix& queries,
+    std::size_t top_k,
+    const RuntimeConfig& config = {});
 
 }  // namespace vecscale

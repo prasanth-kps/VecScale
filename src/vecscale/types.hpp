@@ -12,6 +12,18 @@ using Vector = std::vector<float>;
 using Matrix = std::vector<Vector>;
 using IdArray = std::vector<std::int64_t>;
 
+enum class ComputeBackend {
+    Cpu,
+    OpenMP,
+    Cuda,
+};
+
+struct RuntimeConfig {
+    ComputeBackend backend{ComputeBackend::Cpu};
+    int omp_threads{0};
+    bool shard_parallel{false};
+};
+
 struct SearchResult {
     Matrix scores;
     std::vector<std::vector<std::size_t>> local_indices;

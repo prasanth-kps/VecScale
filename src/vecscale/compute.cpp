@@ -2,8 +2,15 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <numeric>
 #include <stdexcept>
+
+#include "vecscale/compute_cuda.hpp"
+
+#ifdef VECSCALE_HAS_OPENMP
+#include <omp.h>
+#endif
 
 namespace vecscale {
 
@@ -24,9 +31,12 @@ float norm(const Vector& v) {
     return std::sqrt(dot(v, v));
 }
 
-}  // namespace
-
-SearchResult topk_cosine_similarity(const Matrix& queries, const Matrix& vectors, std::size_t top_k) {
+SearchResult topk_cosine_similarity_cpu(
+    const Matrix& queries,
+    const Matrix& vectors,
+    std::size_t top_k,
+    bool use_openmp,
+    int omp_threads) {
     SearchResult out{};
     out.scores.resize(queries.size());
     out.local_indices.resize(queries.size());
@@ -37,17 +47,28 @@ SearchResult topk_cosine_similarity(const Matrix& queries, const Matrix& vectors
 
     const std::size_t k = std::min(top_k, vectors.size());
     std::vector<float> vector_norms(vectors.size(), 0.0f);
-    for (std::size_t j = 0; j < vectors.size(); ++j) {
-        vector_norms[j] = std::max(norm(vectors[j]), 1e-8f);
+
+#ifdef VECSCALE_HAS_OPENMP
+    if (use_openmp && omp_threads > 0) {
+        omp_set_num_threads(omp_threads);
+    }
+#pragma omp parallel for if(use_openmp)
+#endif
+    for (std::ptrdiff_t j = 0; j < static_cast<std::ptrdiff_t>(vectors.size()); ++j) {
+        vector_norms[static_cast<std::size_t>(j)] = std::max(norm(vectors[static_cast<std::size_t>(j)]), 1e-8f);
     }
 
-    for (std::size_t qi = 0; qi < queries.size(); ++qi) {
-        const float q_norm = std::max(norm(queries[qi]), 1e-8f);
+#ifdef VECSCALE_HAS_OPENMP
+#pragma omp parallel for if(use_openmp)
+#endif
+    for (std::ptrdiff_t qi = 0; qi < static_cast<std::ptrdiff_t>(queries.size()); ++qi) {
+        const std::size_t q_idx = static_cast<std::size_t>(qi);
+        const float q_norm = std::max(norm(queries[q_idx]), 1e-8f);
         std::vector<std::pair<float, std::size_t>> scored;
         scored.reserve(vectors.size());
 
         for (std::size_t vj = 0; vj < vectors.size(); ++vj) {
-            const float score = dot(queries[qi], vectors[vj]) / (q_norm * vector_norms[vj]);
+            const float score = dot(queries[q_idx], vectors[vj]) / (q_norm * vector_norms[vj]);
             scored.emplace_back(score, vj);
         }
 
@@ -57,15 +78,42 @@ SearchResult topk_cosine_similarity(const Matrix& queries, const Matrix& vectors
             scored.end(),
             [](const auto& lhs, const auto& rhs) { return lhs.first > rhs.first; });
 
-        out.scores[qi].reserve(k);
-        out.local_indices[qi].reserve(k);
+        out.scores[q_idx].reserve(k);
+        out.local_indices[q_idx].reserve(k);
         for (std::size_t i = 0; i < k; ++i) {
-            out.scores[qi].push_back(scored[i].first);
-            out.local_indices[qi].push_back(scored[i].second);
+            out.scores[q_idx].push_back(scored[i].first);
+            out.local_indices[q_idx].push_back(scored[i].second);
         }
     }
 
     return out;
+}
+
+}  // namespace
+
+SearchResult topk_cosine_similarity(
+    const Matrix& queries,
+    const Matrix& vectors,
+    std::size_t top_k,
+    const RuntimeConfig& config) {
+    if (config.backend == ComputeBackend::Cuda) {
+        SearchResult out{};
+        std::string cuda_error;
+        if (topk_cosine_similarity_cuda(queries, vectors, top_k, &out, &cuda_error)) {
+            return out;
+        }
+        static bool warned_once = false;
+        if (!warned_once) {
+            std::cerr << "[vecscale] CUDA backend unavailable, falling back to CPU/OpenMP: " << cuda_error << "\n";
+            warned_once = true;
+        }
+    }
+
+    bool use_openmp = false;
+#ifdef VECSCALE_HAS_OPENMP
+    use_openmp = config.backend == ComputeBackend::OpenMP;
+#endif
+    return topk_cosine_similarity_cpu(queries, vectors, top_k, use_openmp, config.omp_threads);
 }
 
 }  // namespace vecscale

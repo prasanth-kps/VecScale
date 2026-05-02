@@ -1,22 +1,45 @@
 #!/bin/bash
 #SBATCH --job-name=vecscale_run
-#SBATCH --output=logs/vecscale_%j.out
-#SBATCH --error=logs/vecscale_%j.err
+#SBATCH --output=vecscale_run-%j.out
+#SBATCH --error=vecscale_run-%j.err
+#SBATCH --ntasks=4
 #SBATCH --partition=instruction
 #SBATCH --time=00:20:00
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=8G
+#SBATCH --hint=nomultithread
+# Optional for GPU partition runs:
+#SBATCH --gpus=1
 
 set -euo pipefail
 
 cd "$HOME/VecScale"
-mkdir -p logs data results
+mkdir -p data results
 
-module purge
-module load gcc cmake
+if type module >/dev/null 2>&1; then
+  module purge || true
+  module load gnu15/15.1.0 cmake/4.1.0
+fi
 
-cmake -S . -B build
-cmake --build build -j "${SLURM_CPUS_PER_TASK}"
+BACKEND="${VECSCALE_BACKEND:-openmp}"        # cpu|openmp|cuda
+OMP_THREADS="${VECSCALE_OMP_THREADS:-${SLURM_CPUS_PER_TASK:-1}}"
+CMAKE_ARGS="-DVECSCALE_ENABLE_MPI=ON -DVECSCALE_ENABLE_OPENMP=ON"
+if [[ "${BACKEND}" == "cuda" ]]; then
+  if type module >/dev/null 2>&1; then
+    module load nvidia/cuda/12.9.1 || true
+  fi
+  CMAKE_ARGS="${CMAKE_ARGS} -DVECSCALE_ENABLE_CUDA=ON"
+fi
+
+cmake -S . -B build ${CMAKE_ARGS}
+cmake --build build -j "${SLURM_CPUS_PER_TASK:-1}"
 
 ./build/prepare_dataset data/dataset_cpp 100000 1000 128 42
-./build/run_demo data/dataset_cpp 4 10
+
+if [[ "${VECSCALE_USE_MPI:-1}" -eq 1 && -x ./build/run_demo_mpi ]]; then
+  echo "Launching MPI mode with backend=${BACKEND}"
+  srun --ntasks="${SLURM_NTASKS:-4}" ./build/run_demo_mpi data/dataset_cpp 10 "${BACKEND}" "${OMP_THREADS}"
+else
+  echo "Launching single-process mode with backend=${BACKEND}"
+  ./build/run_demo data/dataset_cpp 4 10 "${BACKEND}" "${OMP_THREADS}" single
+fi

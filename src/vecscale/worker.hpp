@@ -8,7 +8,7 @@ class Worker {
 public:
     Worker(std::size_t worker_id, Matrix shard_embeddings, IdArray shard_ids);
 
-    GlobalSearchResult search(const Matrix& queries, std::size_t top_k) const;
+    GlobalSearchResult search(const Matrix& queries, std::size_t top_k, const RuntimeConfig& config) const;
     std::size_t id() const { return worker_id_; }
 
 private:
