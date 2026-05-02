@@ -1,1 +1,2 @@
-numpy>=1.24
+g++ (C++17 or newer)
+cmake (3.16 or newer)

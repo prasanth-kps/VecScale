@@ -1,4 +1,5 @@
 #pragma once
+
 #include "vecscale/aggregator.hpp"
 #include "vecscale/baselines.hpp"
 #include "vecscale/benchmark.hpp"
