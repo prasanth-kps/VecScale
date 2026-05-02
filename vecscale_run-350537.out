@@ -1,0 +1,18 @@
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (1.9s)
+-- Generating done (0.5s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build
+[ 69%] Built target vecscale
+[ 84%] Built target run_demo
+[100%] Built target prepare_dataset
+Dataset written to data/dataset_cpp
+embeddings=100000 x 128
+queries=1000 x 128
+Launching single-process mode with backend=openmp
+=== C++ Benchmark Summary ===
+Backend: openmp
+OMP threads: 8
+Queries: 1000
+Baseline throughput (single-node exact): 16.9411 qps
+shards=4 distributed_qps=67.6287 p50_ms=117.691 p95_ms=118.369
