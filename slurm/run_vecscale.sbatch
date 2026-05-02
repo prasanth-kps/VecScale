@@ -2,6 +2,7 @@
 #SBATCH --job-name=vecscale_run
 #SBATCH --output=logs/vecscale_%j.out
 #SBATCH --error=logs/vecscale_%j.err
+#SBATCH --partition=instruction
 #SBATCH --time=00:20:00
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=8G

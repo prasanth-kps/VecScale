@@ -3,6 +3,7 @@
 #SBATCH --array=0-2
 #SBATCH --output=logs/arr_%A_%a.out
 #SBATCH --error=logs/arr_%A_%a.err
+#SBATCH --partition=instruction
 #SBATCH --time=00:20:00
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=8G
