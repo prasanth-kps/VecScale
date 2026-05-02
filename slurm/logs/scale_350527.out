@@ -1,0 +1,31 @@
+-- Configuring done (0.1s)
+-- Generating done (0.3s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build
+[ 66%] Built target vecscale
+[ 83%] Built target run_demo
+[100%] Built target prepare_dataset
+Dataset written to data/dataset_cpp
+embeddings=120000 x 128
+queries=1200 x 128
+===== scaling run =====
+---- shards=1 ----
+=== C++ Benchmark Summary ===
+Queries: 1200
+Baseline throughput (single-node exact): 13.9603 qps
+Distributed throughput: 7.22055 qps
+p50 latency: 138.513 ms
+p95 latency: 138.818 ms
+---- shards=2 ----
+=== C++ Benchmark Summary ===
+Queries: 1200
+Baseline throughput (single-node exact): 13.9516 qps
+Distributed throughput: 7.21703 qps
+p50 latency: 138.575 ms
+p95 latency: 138.938 ms
+---- shards=4 ----
+=== C++ Benchmark Summary ===
+Queries: 1200
+Baseline throughput (single-node exact): 13.9554 qps
+Distributed throughput: 7.2236 qps
+p50 latency: 138.437 ms
+p95 latency: 138.808 ms

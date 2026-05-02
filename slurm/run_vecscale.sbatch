@@ -13,7 +13,7 @@ cd "$HOME/VecScale"
 mkdir -p logs data results
 
 module purge
-module load gcc cmake
+module load gcc/14.3.0 cmake/4.1.2 
 
 cmake -S . -B build
 cmake --build build -j "${SLURM_CPUS_PER_TASK}"
