@@ -1,10 +1,14 @@
 {
-  "dataset_dir": "data/dataset_cpp",
+  "dataset_path": "data/dataset.npz",
   "output_dir": "results",
+  "shard_dir": "data/shards",
+  "host": "127.0.0.1",
+  "base_port": 55000,
   "num_shards": 4,
   "top_k": 10,
-  "vector_dim": 128,
-  "num_vectors": 100000,
-  "num_queries": 1000,
-  "seed": 42
+  "batch_size": 8,
+  "concurrency_levels": [1, 4, 8],
+  "warmup_queries": 10,
+  "use_gpu": false,
+  "auth_key": "vecscale"
 }

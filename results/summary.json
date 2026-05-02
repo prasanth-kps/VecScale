@@ -1,0 +1,46 @@
+{
+  "config": {
+    "dataset_path": "data/dataset.npz",
+    "output_dir": "results",
+    "shard_dir": "data/shards",
+    "host": "127.0.0.1",
+    "base_port": 55000,
+    "num_shards": 4,
+    "top_k": 10,
+    "batch_size": 8,
+    "concurrency_levels": [
+      1,
+      2
+    ],
+    "warmup_queries": 10,
+    "use_gpu": false,
+    "auth_key": "vecscale"
+  },
+  "baseline": {
+    "total_time_s": 0.0046362499706447124,
+    "throughput_qps": 21569.156243336485
+  },
+  "distributed_runs": [
+    {
+      "concurrency": 1,
+      "throughput_qps": 5146.3601165293385,
+      "p50_ms": 1.393584068864584,
+      "p95_ms": 2.3237080313265324,
+      "recall_at_k": 1.0,
+      "avg_scatter_gather_ms": 1.4091826473864226,
+      "avg_merge_ms": 0.0580062444966573
+    },
+    {
+      "concurrency": 2,
+      "throughput_qps": 8375.530721154091,
+      "p50_ms": 1.7461669631302357,
+      "p95_ms": 2.2786660119891167,
+      "recall_at_k": 1.0,
+      "avg_scatter_gather_ms": 1.6419935899858291,
+      "avg_merge_ms": 0.11183325057992569
+    }
+  ],
+  "artifacts": {
+    "latency_log_csv": "results/latency_log.csv"
+  }
+}

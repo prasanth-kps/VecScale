@@ -1,0 +1,12 @@
+{
+  "dataset_path": "data/dataset.npz",
+  "num_shards": 4,
+  "shards": [
+    "data/shards/shard_000.npz",
+    "data/shards/shard_001.npz",
+    "data/shards/shard_002.npz",
+    "data/shards/shard_003.npz"
+  ],
+  "total_vectors": 5000,
+  "dimension": 64
+}
