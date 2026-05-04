@@ -1,0 +1,9 @@
+Using GNU15 + OpenMPI toolchain
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (3.3s)
+-- Generating done (0.6s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build
+[ 80%] Built target vecscale
+[ 80%] Built target run_demo
+[100%] Built target prepare_dataset

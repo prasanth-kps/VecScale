@@ -1,0 +1,14 @@
+VecScale Benchmark Report
+=========================
+corpus_size     : 120000
+num_queries     : 1200
+dim             : 128
+num_shards      : 4
+top_k           : 10
+backend         : cpu
+baseline_qps    : 117.705865
+dist_bulk_qps   : 447.528206
+distributed_qps : 212.998050
+p50_latency_ms  : 4.670565
+p95_latency_ms  : 4.785291
+recall_at_k     : 1.000000

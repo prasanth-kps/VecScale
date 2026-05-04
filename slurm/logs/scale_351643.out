@@ -1,0 +1,133 @@
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (5.2s)
+-- Generating done (0.5s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build
+[ 60%] Built target vecscale
+Built target run_demo
+Built target prepare_dataset
+Dataset written to data/dataset_cpp
+embeddings=120000 x 128
+queries=1200 x 128
+===== thread-shard scaling run =====
+---- shards=1 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=1  k=10  backend=cpu
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10199.530 ms  throughput=117.652 qps
+
+[2/3] Distributed search (1 parallel shards)...
+  scatter+gather=10191.457 ms  bulk_qps=117.746
+  per-query p50=17.287 ms  p95=17.552 ms  throughput=57.784 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/s1/benchmark_report.txt
+---- shards=2 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=2  k=10  backend=cpu
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10510.269 ms  throughput=114.174 qps
+
+[2/3] Distributed search (2 parallel shards)...
+  scatter+gather=5129.263 ms  bulk_qps=233.952
+  per-query p50=8.924 ms  p95=9.220 ms  throughput=112.110 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/s2/benchmark_report.txt
+---- shards=4 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=4  k=10  backend=cpu
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10292.653 ms  throughput=116.588 qps
+
+[2/3] Distributed search (4 parallel shards)...
+  scatter+gather=2689.025 ms  bulk_qps=446.258
+  per-query p50=4.665 ms  p95=4.788 ms  throughput=212.870 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/s4/benchmark_report.txt
+---- shards=8 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=8  k=10  backend=cpu
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10257.277 ms  throughput=116.990 qps
+
+[2/3] Distributed search (8 parallel shards)...
+  scatter+gather=1822.872 ms  bulk_qps=658.302
+  per-query p50=3.255 ms  p95=3.326 ms  throughput=303.567 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/s8/benchmark_report.txt
+===== openmp-backend scaling run =====
+---- shards=1  omp_threads=8 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=1  k=10  backend=openmp
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10351.823 ms  throughput=115.922 qps
+
+[2/3] Distributed search (1 parallel shards)...
+  scatter+gather=1831.589 ms  bulk_qps=655.169
+  per-query p50=24.878 ms  p95=34.529 ms  throughput=308.372 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/omp_s1/benchmark_report.txt
+---- shards=2  omp_threads=4 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=2  k=10  backend=openmp
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10799.412 ms  throughput=111.117 qps
+
+[2/3] Distributed search (2 parallel shards)...
+  scatter+gather=1813.983 ms  bulk_qps=661.528
+  per-query p50=12.975 ms  p95=16.409 ms  throughput=301.721 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/omp_s2/benchmark_report.txt
+---- shards=4  omp_threads=2 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=4  k=10  backend=openmp
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10488.341 ms  throughput=114.413 qps
+
+[2/3] Distributed search (4 parallel shards)...
+  scatter+gather=1804.756 ms  bulk_qps=664.910
+  per-query p50=9.278 ms  p95=13.364 ms  throughput=208.288 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/omp_s4/benchmark_report.txt
+---- shards=8  omp_threads=1 ----
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=8  k=10  backend=openmp
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=10248.735 ms  throughput=117.088 qps
+
+[2/3] Distributed search (8 parallel shards)...
+  scatter+gather=1854.905 ms  bulk_qps=646.933
+  per-query p50=3.250 ms  p95=3.309 ms  throughput=304.881 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/omp_s8/benchmark_report.txt

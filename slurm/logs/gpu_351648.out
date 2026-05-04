@@ -1,0 +1,8 @@
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (0.3s)
+-- Generating done (1.8s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build
+[ 60%] Built target vecscale
+[100%] Built target run_demo
+[100%] Built target prepare_dataset

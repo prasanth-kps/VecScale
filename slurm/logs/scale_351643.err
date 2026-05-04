@@ -3,14 +3,14 @@ correctly!
 While processing the following module(s):
     Module fullname  Module Filename
     ---------------  ---------------
-    gcc/14.3.0       /opt/apps/lmod/modulefiles/gcc/14.3.0.lua
+    gcc/13.2.0       /opt/apps/lmod/modulefiles/gcc/13.2.0.lua
 
 Lmod Warning: Please use a newer version of this module for compatibility with
 Euler Generation 8. 
 While processing the following module(s):
     Module fullname  Module Filename
     ---------------  ---------------
-    gcc/14.3.0       /opt/apps/lmod/modulefiles/gcc/14.3.0.lua
+    gcc/13.2.0       /opt/apps/lmod/modulefiles/gcc/13.2.0.lua
 
 CMake Warning (dev) in CMakeLists.txt:
   Policy CMP0104 is not set: CMAKE_CUDA_ARCHITECTURES now detected for NVCC,
@@ -39,4 +39,3 @@ CMake Warning (dev) in CMakeLists.txt:
   CUDA_ARCHITECTURES is empty for target "run_demo".
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
-nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
