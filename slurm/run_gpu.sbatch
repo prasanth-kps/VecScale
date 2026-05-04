@@ -2,7 +2,7 @@
 #SBATCH --job-name=vecscale_gpu
 #SBATCH --output=slurm/logs/gpu_%j.out
 #SBATCH --error=slurm/logs/gpu_%j.err
-#SBATCH --partition=instruction   # change to a GPU partition if your account has access
+#SBATCH --partition=instruction 
 #SBATCH --time=00:30:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
