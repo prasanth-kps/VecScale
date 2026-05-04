@@ -1,0 +1,2 @@
+/usr/bin/ar qc libvecscale.a CMakeFiles/vecscale.dir/src/vecscale/aggregator.cpp.o CMakeFiles/vecscale.dir/src/vecscale/baselines.cpp.o CMakeFiles/vecscale.dir/src/vecscale/benchmark.cpp.o CMakeFiles/vecscale.dir/src/vecscale/compute.cpp.o CMakeFiles/vecscale.dir/src/vecscale/data.cpp.o CMakeFiles/vecscale.dir/src/vecscale/router.cpp.o CMakeFiles/vecscale.dir/src/vecscale/worker.cpp.o
+/usr/bin/ranlib libvecscale.a

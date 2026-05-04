@@ -1,0 +1,5 @@
+/Users/Patron/work/Proj_759/VecScale/build_test/CMakeFiles/vecscale.dir
+/Users/Patron/work/Proj_759/VecScale/build_test/CMakeFiles/prepare_dataset.dir
+/Users/Patron/work/Proj_759/VecScale/build_test/CMakeFiles/run_demo.dir
+/Users/Patron/work/Proj_759/VecScale/build_test/CMakeFiles/edit_cache.dir
+/Users/Patron/work/Proj_759/VecScale/build_test/CMakeFiles/rebuild_cache.dir

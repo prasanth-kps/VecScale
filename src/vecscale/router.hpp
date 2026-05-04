@@ -11,6 +11,8 @@ public:
 
     GlobalSearchResult search(const Matrix& queries, std::size_t top_k) const;
 
+    std::size_t worker_count() const { return workers_.size(); }
+
 private:
     std::vector<Worker> workers_;
 };

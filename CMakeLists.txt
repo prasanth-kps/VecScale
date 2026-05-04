@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+find_package(Threads REQUIRED)
+
 add_library(vecscale STATIC
     src/vecscale/aggregator.cpp
     src/vecscale/baselines.cpp
@@ -16,6 +18,7 @@ add_library(vecscale STATIC
 )
 
 target_include_directories(vecscale PUBLIC src)
+target_link_libraries(vecscale PUBLIC Threads::Threads)
 
 add_executable(prepare_dataset scripts/prepare_dataset.cpp)
 target_link_libraries(prepare_dataset PRIVATE vecscale)

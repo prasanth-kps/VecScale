@@ -1,5 +1,9 @@
 #include "vecscale/router.hpp"
 
+#include <mutex>
+#include <thread>
+#include <vector>
+
 #include "vecscale/aggregator.hpp"
 
 namespace vecscale {
@@ -7,15 +11,23 @@ namespace vecscale {
 QueryRouter::QueryRouter(std::vector<Worker> workers) : workers_(std::move(workers)) {}
 
 GlobalSearchResult QueryRouter::search(const Matrix& queries, std::size_t top_k) const {
-    std::vector<std::vector<std::vector<std::int64_t>>> shard_ids;
-    std::vector<Matrix> shard_scores;
-    shard_ids.reserve(workers_.size());
-    shard_scores.reserve(workers_.size());
+    const std::size_t n = workers_.size();
 
-    for (const auto& worker : workers_) {
-        const auto local = worker.search(queries, top_k);
-        shard_ids.push_back(local.ids);
-        shard_scores.push_back(local.scores);
+    std::vector<std::vector<std::vector<std::int64_t>>> shard_ids(n);
+    std::vector<Matrix> shard_scores(n);
+
+    // Each worker runs in its own thread; results land in pre-sized slots (no mutex needed).
+    std::vector<std::thread> threads;
+    threads.reserve(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        threads.emplace_back([&, i]() {
+            const auto local = workers_[i].search(queries, top_k);
+            shard_ids[i]     = local.ids;
+            shard_scores[i]  = local.scores;
+        });
+    }
+    for (auto& t : threads) {
+        t.join();
     }
 
     return merge_topk(shard_ids, shard_scores, top_k);
