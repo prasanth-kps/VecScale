@@ -14,11 +14,7 @@ cd "$HOME/VecScale"
 mkdir -p slurm/logs data results
 
 module purge
-if module load stack/2024-06 2>/dev/null; then
-    module load gcc/13.2.0 cmake/3.27.7 2>/dev/null || module load gcc cmake
-else
-    module load gcc/14.3.0 cmake/4.1.2
-fi
+module load gcc/13.2.0 cmake/4.1.2
 
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j "${SLURM_CPUS_PER_TASK}"
