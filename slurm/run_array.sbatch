@@ -16,13 +16,15 @@ mkdir -p slurm/logs data results
 module purge
 module load gcc/13.2.0 cmake/4.1.2
 
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j "${SLURM_CPUS_PER_TASK}"
+# Each array task gets its own build directory to avoid simultaneous-build race conditions.
+BUILD_DIR="build_task_${SLURM_ARRAY_TASK_ID}"
+cmake -S . -B "${BUILD_DIR}" -DCMAKE_BUILD_TYPE=Release
+cmake --build "${BUILD_DIR}" -j "${SLURM_CPUS_PER_TASK}"
 
-./build/prepare_dataset data/dataset_cpp 120000 1200 128 42
+"${BUILD_DIR}/prepare_dataset" data/dataset_cpp 120000 1200 128 42
 
 SHARDS_LIST=(1 2 4)
 SHARDS=${SHARDS_LIST[$SLURM_ARRAY_TASK_ID]}
 
 echo "Running shards=$SHARDS"
-./build/run_demo data/dataset_cpp "$SHARDS" 10 cpu 0 "results/arr_s${SHARDS}"
+"${BUILD_DIR}/run_demo" data/dataset_cpp "$SHARDS" 10 cpu 0 "results/arr_s${SHARDS}"

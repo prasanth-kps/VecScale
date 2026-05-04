@@ -1,4 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
+
+# Silence the CMP0104 CUDA_ARCHITECTURES warning that appears when nvcc is in PATH
+# even if we are not building CUDA code.
+cmake_policy(SET CMP0104 NEW)
+if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+    set(CMAKE_CUDA_ARCHITECTURES "86")  # Euler Gen 8 (Ampere); override with -DCMAKE_CUDA_ARCHITECTURES=XX
+endif()
+
 project(VecScaleCpp LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)

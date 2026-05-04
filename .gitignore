@@ -1,4 +1,7 @@
 .venv/
 build/
-data/
 build_test/
+build_mpi/
+build_gpu/
+build_task_*/
+data/
