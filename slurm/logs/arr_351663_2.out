@@ -1,0 +1,30 @@
+-- The CXX compiler identification is GNU 13.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /opt/apps/gcc/x86_64/13.2.0/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (3.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build_task_2
+[ 30%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/aggregator.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/benchmark.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/baselines.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/data.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/compute_cuda_stub.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/router.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/compute.cpp.o
+[ 61%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/worker.cpp.o
+[ 69%] Linking CXX static library libvecscale.a
+[ 69%] Built target vecscale
+[ 84%] Building CXX object CMakeFiles/run_demo.dir/scripts/run_demo.cpp.o
+[ 84%] Building CXX object CMakeFiles/prepare_dataset.dir/scripts/prepare_dataset.cpp.o
+[ 92%] Linking CXX executable prepare_dataset
+[ 92%] Built target prepare_dataset
+[100%] Linking CXX executable run_demo
+[100%] Built target run_demo

@@ -1,0 +1,5 @@
+[2026-05-04T03:21:18.529] error: execve(): build_mpi/run_demo_mpi: No such file or directory
+[2026-05-04T03:21:18.529] error: execve(): build_mpi/run_demo_mpi: No such file or directory
+[2026-05-04T03:21:18.529] error: execve(): build_mpi/run_demo_mpi: No such file or directory
+[2026-05-04T03:21:18.529] error: execve(): build_mpi/run_demo_mpi: No such file or directory
+srun: error: euler03: tasks 0-3: Exited with exit code 2
