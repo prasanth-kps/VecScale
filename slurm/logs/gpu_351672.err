@@ -1,0 +1,107 @@
+Lmod Warning: This module was built for an older platform and may not work
+correctly! 
+While processing the following module(s):
+    Module fullname  Module Filename
+    ---------------  ---------------
+    gcc/13.2.0       /opt/apps/lmod/modulefiles/gcc/13.2.0.lua
+
+Lmod Warning: Please use a newer version of this module for compatibility with
+Euler Generation 8. 
+While processing the following module(s):
+    Module fullname  Module Filename
+    ---------------  ---------------
+    gcc/13.2.0       /opt/apps/lmod/modulefiles/gcc/13.2.0.lua
+
+CMake Error at /opt/ohpc/pub/utils/cmake/4.1.2/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:928 (message):
+  Compiling the CUDA compiler identification source file
+  "CMakeCUDACompilerId.cu" failed.
+
+  Compiler: /opt/apps/cuda/x86_64/12.1.0/default/bin/nvcc
+
+  Build flags:
+
+  Id flags: --keep;--keep-dir;tmp -v
+
+
+
+  The output was:
+
+  1
+
+  #$ _NVVM_BRANCH_=nvvm
+
+  #$ _SPACE_=
+
+  #$ _CUDART_=cudart
+
+  #$ _HERE_=/opt/apps/cuda/x86_64/12.1.0/default/bin
+
+  #$ _THERE_=/opt/apps/cuda/x86_64/12.1.0/default/bin
+
+  #$ _TARGET_SIZE_=
+
+  #$ _TARGET_DIR_=
+
+  #$ _TARGET_DIR_=targets/x86_64-linux
+
+  #$ TOP=/opt/apps/cuda/x86_64/12.1.0/default/bin/..
+
+  #$
+  NVVMIR_LIBRARY_DIR=/opt/apps/cuda/x86_64/12.1.0/default/bin/../nvvm/libdevice
+
+  #$
+  LD_LIBRARY_PATH=/opt/apps/cuda/x86_64/12.1.0/default/bin/../lib:/opt/apps/cuda/x86_64/12.1.0/default/lib64
+
+  #$
+  PATH=/opt/apps/cuda/x86_64/12.1.0/default/bin/../nvvm/bin:/opt/apps/cuda/x86_64/12.1.0/default/bin:/opt/apps/cuda/x86_64/12.1.0/default/bin:/opt/ohpc/pub/utils/cmake/4.1.2/bin:/opt/apps/gcc/x86_64/13.2.0/bin:/srv/home/jannupalli/.local/bin:/srv/home/jannupalli/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+
+  #$
+  INCLUDES="-I/opt/apps/cuda/x86_64/12.1.0/default/bin/../targets/x86_64-linux/include"
+
+  #$ LIBRARIES=
+  "-L/opt/apps/cuda/x86_64/12.1.0/default/bin/../targets/x86_64-linux/lib/stubs"
+  "-L/opt/apps/cuda/x86_64/12.1.0/default/bin/../targets/x86_64-linux/lib"
+
+  #$ CUDAFE_FLAGS=
+
+  #$ PTXAS_FLAGS=
+
+  #$ rm tmp/a_dlink.reg.c
+
+  #$ gcc -D__CUDA_ARCH_LIST__=520 -E -x c++ -D__CUDACC__ -D__NVCC__
+  "-I/opt/apps/cuda/x86_64/12.1.0/default/bin/../targets/x86_64-linux/include"
+  -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=1
+  -D__CUDACC_VER_BUILD__=66 -D__CUDA_API_VER_MAJOR__=12
+  -D__CUDA_API_VER_MINOR__=1 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -include
+  "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o
+  "tmp/CMakeCUDACompilerId.cpp4.ii"
+
+  In file included from
+  /opt/apps/cuda/x86_64/12.1.0/default/bin/../targets/x86_64-linux/include/cuda_runtime.h:83,
+
+                   from <command-line>:
+
+  
+  /opt/apps/cuda/x86_64/12.1.0/default/bin/../targets/x86_64-linux/include/crt/host_config.h:132:2:
+  error: #error -- unsupported GNU version! gcc versions later than 12 are
+  not supported! The nvcc flag '-allow-unsupported-compiler' can be used to
+  override this version check; however, using an unsupported host compiler
+  may cause compilation failure or incorrect run time execution.  Use at your
+  own risk.
+
+    132 | #error -- unsupported GNU version! gcc versions later than 12 are not supported! The nvcc flag '-allow-unsupported-compiler' can be used to override this version check; however, using an unsupported host compiler may cause compilation failure or incorrect run time execution. Use at your own risk.
+        |  ^~~~~
+
+  # --error 0x1 --
+
+
+
+
+
+Call Stack (most recent call first):
+  /opt/ohpc/pub/utils/cmake/4.1.2/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)
+  /opt/ohpc/pub/utils/cmake/4.1.2/share/cmake-4.1/Modules/CMakeDetermineCompilerId.cmake:53 (__determine_compiler_id_test)
+  /opt/ohpc/pub/utils/cmake/4.1.2/share/cmake-4.1/Modules/CMakeDetermineCUDACompiler.cmake:162 (CMAKE_DETERMINE_COMPILER_ID)
+  CMakeLists.txt:44 (enable_language)
+
+
