@@ -16,69 +16,39 @@ mkdir -p slurm/logs data results
 
 module purge
 
-# ── Step 1: discover what MPI modules exist on this cluster ──────────────────
-echo "=== Available MPI-related modules ==="
-module spider 2>&1 | grep -i "mpi\|openmpi\|mvapich\|impi" || true
-echo "=== (end module list) ==="
+# Confirmed available MPI modules on Euler (from 'module spider mpi'):
+#   openmpi5/5.0.8   — OpenMPI 5, pairs with gnu15/15.1.0
+#   impi/2021.14     — Intel MPI
+#   mpich/3.4.3-ucx  — MPICH fallback
+#
+# Try them in preference order.
 
-# ── Step 2: try to load a toolchain that ships MPI wrappers ──────────────────
-# OpenHPC clusters bundle compiler + MPI in a single meta-module like
-#   gnu15/15.1.0  +  openmpi5-gnu15/5.0.8
-# or provide Intel MPI separately from the Intel compiler.
-# We try the most common patterns in order.
-
-LOADED_MPI=""
-for CANDIDATE in \
-    "openmpi5-gnu15/5.0.8"  \
-    "openmpi5-gnu15"         \
-    "openmpi4-gnu12/4.1.6"  \
-    "openmpi4-gnu12"         \
-    "openmpi/5.0.8"          \
-    "openmpi/4.1.6"          \
-    "openmpi"                \
-    "impi/2021.14"           \
-    "impi/2025.0"            \
-    "intel-mpi/2025.0.4"     \
-    "mvapich2-gnu15"         \
-    "mvapich2"               \
-; do
-    if module load "${CANDIDATE}" 2>/dev/null; then
-        echo "Loaded MPI module: ${CANDIDATE}"
-        LOADED_MPI="${CANDIDATE}"
-        break
-    fi
-done
-
-# Now load the compiler + cmake (use whatever pairs with the MPI above).
-if [[ "${LOADED_MPI}" == *gnu15* ]] || [[ "${LOADED_MPI}" == *openmpi5* ]]; then
-    module load gnu15/15.1.0 cmake/4.1.2
-    echo "Compiler: GNU 15"
-elif [[ "${LOADED_MPI}" == *gnu12* ]] || [[ "${LOADED_MPI}" == *openmpi4* ]]; then
-    module load gcc/13.2.0 cmake/4.1.2
-    echo "Compiler: GCC 13"
+if module load gnu15/15.1.0 openmpi5/5.0.8 cmake/4.1.2 2>/dev/null; then
+    echo "Toolchain: gnu15/15.1.0 + openmpi5/5.0.8"
+elif module load intel/2025.0.4 impi/2021.14 cmake/4.1.2 2>/dev/null; then
+    echo "Toolchain: intel/2025.0.4 + impi/2021.14"
+elif module load gcc/13.2.0 mpich/3.4.3-ucx cmake/4.1.2 2>/dev/null; then
+    echo "Toolchain: gcc/13.2.0 + mpich/3.4.3-ucx"
 else
-    # Intel MPI — load intel compiler alongside it
-    module load intel/2025.0.4 cmake/4.1.2 2>/dev/null || module load gcc/13.2.0 cmake/4.1.2
-    echo "Compiler: Intel or GCC fallback"
+    echo "ERROR: Could not load any MPI toolchain."
+    exit 1
 fi
 
-# ── Step 3: confirm wrappers are now in PATH ──────────────────────────────────
+# Confirm mpicxx is in PATH.
 echo "--- MPI wrapper check ---"
-which mpicxx  2>/dev/null && mpicxx  --version 2>&1 | head -1 || echo "mpicxx  NOT found"
-which mpicc   2>/dev/null && mpicc   --version 2>&1 | head -1 || echo "mpicc   NOT found"
+which mpicxx 2>/dev/null && mpicxx --version 2>&1 | head -1 || echo "mpicxx NOT found"
 echo "-------------------------"
 
 if ! command -v mpicxx >/dev/null 2>&1; then
-    echo "ERROR: mpicxx not in PATH even after module load."
-    echo "Please run 'module spider mpi' on the login node to find the correct module name."
+    echo "ERROR: mpicxx still not in PATH after module load."
     exit 1
 fi
 
 MPI_CXX_BIN=$(which mpicxx)
 MPI_C_BIN=$(which mpicc)
-echo "Using MPI wrapper: ${MPI_CXX_BIN}"
+echo "Using: ${MPI_CXX_BIN}"
 
-# ── Step 4: build ─────────────────────────────────────────────────────────────
+# Build with explicit MPI wrapper hints so cmake cannot miss them.
 rm -rf build_mpi
 cmake -S . -B build_mpi \
     -DCMAKE_BUILD_TYPE=Release \
@@ -88,11 +58,10 @@ cmake -S . -B build_mpi \
 cmake --build build_mpi -j "${SLURM_CPUS_PER_TASK}"
 
 if [ ! -f "build_mpi/run_demo_mpi" ]; then
-    echo "ERROR: run_demo_mpi was not produced — MPI not detected by cmake despite wrapper."
+    echo "ERROR: run_demo_mpi not produced — cmake MPI detection failed."
     exit 1
 fi
 
-# ── Step 5: run ──────────────────────────────────────────────────────────────
 build_mpi/prepare_dataset data/dataset_cpp 100000 1000 128 42
 
 echo "===== MPI run: ${SLURM_NTASKS} ranks ====="
