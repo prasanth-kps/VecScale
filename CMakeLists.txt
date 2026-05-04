@@ -9,6 +9,8 @@ option(VECSCALE_ENABLE_OPENMP "Enable OpenMP acceleration" ON)
 option(VECSCALE_ENABLE_MPI "Enable MPI runner target" ON)
 option(VECSCALE_ENABLE_CUDA "Enable CUDA backend in compute path" OFF)
 
+find_package(Threads REQUIRED)
+
 add_library(vecscale STATIC
     src/vecscale/aggregator.cpp
     src/vecscale/baselines.cpp
@@ -20,6 +22,7 @@ add_library(vecscale STATIC
 )
 
 target_include_directories(vecscale PUBLIC src)
+target_link_libraries(vecscale PUBLIC Threads::Threads)
 
 if(VECSCALE_ENABLE_OPENMP)
     find_package(OpenMP QUIET)

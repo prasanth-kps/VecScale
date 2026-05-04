@@ -1,34 +1,38 @@
 #include "vecscale/router.hpp"
 
-#include "vecscale/aggregator.hpp"
+#include <thread>
+#include <vector>
 
-#ifdef VECSCALE_HAS_OPENMP
-#include <omp.h>
-#endif
+#include "vecscale/aggregator.hpp"
 
 namespace vecscale {
 
 QueryRouter::QueryRouter(std::vector<Worker> workers) : workers_(std::move(workers)) {}
 
 GlobalSearchResult QueryRouter::search(const Matrix& queries, std::size_t top_k, const RuntimeConfig& config) const {
-    std::vector<std::vector<std::vector<std::int64_t>>> shard_ids(workers_.size());
-    std::vector<Matrix> shard_scores(workers_.size());
+    const std::size_t n = workers_.size();
+    std::vector<std::vector<std::vector<std::int64_t>>> shard_ids(n);
+    std::vector<Matrix> shard_scores(n);
 
-    bool parallel_shards = false;
-#ifdef VECSCALE_HAS_OPENMP
-    parallel_shards = config.shard_parallel;
-    if (parallel_shards && config.omp_threads > 0) {
-        omp_set_num_threads(config.omp_threads);
+    // Each worker dispatched in its own thread; results land in pre-sized slots (no mutex needed).
+    std::vector<std::thread> threads;
+    threads.reserve(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        threads.emplace_back([&, i]() {
+            const auto local = workers_[i].search(queries, top_k, config);
+            shard_ids[i]    = local.ids;
+            shard_scores[i] = local.scores;
+        });
     }
-#pragma omp parallel for if(parallel_shards)
-#endif
-    for (std::ptrdiff_t wi = 0; wi < static_cast<std::ptrdiff_t>(workers_.size()); ++wi) {
-        const auto local = workers_[static_cast<std::size_t>(wi)].search(queries, top_k, config);
-        shard_ids[static_cast<std::size_t>(wi)] = std::move(local.ids);
-        shard_scores[static_cast<std::size_t>(wi)] = std::move(local.scores);
+    for (auto& t : threads) {
+        t.join();
     }
 
     return merge_topk(shard_ids, shard_scores, top_k);
+}
+
+std::size_t QueryRouter::worker_count() const {
+    return workers_.size();
 }
 
 }  // namespace vecscale

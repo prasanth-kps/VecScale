@@ -1,6 +1,7 @@
 #include "vecscale/baselines.hpp"
 
 #include <chrono>
+#include <unordered_set>
 
 #include "vecscale/compute.hpp"
 
@@ -34,6 +35,29 @@ double measure_single_node_baseline_qps(
     const auto end = std::chrono::high_resolution_clock::now();
     const std::chrono::duration<double> elapsed = end - start;
     return elapsed.count() > 0.0 ? static_cast<double>(queries.size()) / elapsed.count() : 0.0;
+}
+
+double mean_recall_at_k(const GlobalSearchResult& approx, const GlobalSearchResult& exact, std::size_t k) {
+    if (exact.ids.empty() || approx.ids.size() != exact.ids.size()) {
+        return 0.0;
+    }
+    double sum = 0.0;
+    for (std::size_t q = 0; q < exact.ids.size(); ++q) {
+        const std::size_t tk = std::min(k, exact.ids[q].size());
+        if (tk == 0) { continue; }
+        std::unordered_set<std::int64_t> truth;
+        truth.reserve(tk);
+        for (std::size_t i = 0; i < tk; ++i) {
+            truth.insert(exact.ids[q][i]);
+        }
+        std::size_t hits = 0;
+        const std::size_t ak = std::min(k, approx.ids[q].size());
+        for (std::size_t i = 0; i < ak; ++i) {
+            if (truth.count(approx.ids[q][i]) != 0U) { ++hits; }
+        }
+        sum += static_cast<double>(hits) / static_cast<double>(tk);
+    }
+    return sum / static_cast<double>(exact.ids.size());
 }
 
 }  // namespace vecscale

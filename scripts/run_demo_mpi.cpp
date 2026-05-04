@@ -1,5 +1,8 @@
 #include <algorithm>
 #include <cstdlib>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -169,18 +172,50 @@ int main(int argc, char** argv) {
 
         if (rank == 0) {
             const auto merged = merge_rank_candidates(gathered_scores, gathered_ids, world_size, query_count, top_k);
-            (void)merged;
-            const double distributed_qps = max_compute_s > 0.0 ? static_cast<double>(query_count) / max_compute_s : 0.0;
-            const double baseline_qps =
-                vecscale::measure_single_node_baseline_qps(dataset.queries, dataset.embeddings, dataset.ids, top_k);
 
+            const double distributed_qps = max_compute_s > 0.0
+                ? static_cast<double>(query_count) / max_compute_s : 0.0;
+
+            // Exact single-node baseline (runs only on rank 0 for comparison).
+            const auto t0 = MPI_Wtime();
+            const auto baseline = vecscale::exact_baseline_topk(
+                dataset.queries, dataset.embeddings, dataset.ids, top_k);
+            const auto t1 = MPI_Wtime();
+            const double baseline_qps = (t1 - t0) > 0.0
+                ? static_cast<double>(query_count) / (t1 - t0) : 0.0;
+
+            const double recall = vecscale::mean_recall_at_k(merged, baseline, top_k);
+
+            std::cout << std::fixed << std::setprecision(3);
             std::cout << "=== MPI Benchmark Summary ===\n";
-            std::cout << "MPI ranks: " << world_size << "\n";
-            std::cout << "Backend: " << backend_text << "\n";
-            std::cout << "Queries: " << query_count << "\n";
-            std::cout << "Baseline throughput (single-node exact): " << baseline_qps << " qps\n";
-            std::cout << "Distributed throughput (MPI gather phase): " << distributed_qps << " qps\n";
-            std::cout << "Top-K merge complete on rank 0.\n";
+            std::cout << "MPI ranks      : " << world_size      << "\n";
+            std::cout << "Backend        : " << backend_text     << "\n";
+            std::cout << "Queries        : " << query_count      << "\n";
+            std::cout << "Baseline qps   : " << baseline_qps     << "\n";
+            std::cout << "Distributed qps: " << distributed_qps  << "\n";
+            std::cout << "recall@" << top_k << "        : "
+                      << std::setprecision(4) << recall          << "\n";
+
+            // Write report.
+            const std::string output_dir = (argc > 5) ? argv[5] : "results";
+            std::filesystem::create_directories(output_dir);
+            const std::string path = output_dir + "/benchmark_report_mpi.txt";
+            std::ofstream f(path);
+            if (f.is_open()) {
+                f << std::fixed << std::setprecision(6);
+                f << "VecScale MPI Benchmark Report\n";
+                f << "==============================\n";
+                f << "mpi_ranks       : " << world_size     << "\n";
+                f << "corpus_size     : " << total_vectors  << "\n";
+                f << "num_queries     : " << query_count    << "\n";
+                f << "top_k           : " << top_k          << "\n";
+                f << "backend         : " << backend_text   << "\n";
+                f << "baseline_qps    : " << baseline_qps   << "\n";
+                f << "distributed_qps : " << distributed_qps<< "\n";
+                f << "recall_at_k     : " << recall         << "\n";
+                f.close();
+                std::cout << "Report written to: " << path << "\n";
+            }
         }
     } catch (const std::exception& ex) {
         if (rank == 0) {
