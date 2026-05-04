@@ -1,0 +1,62 @@
+-- The CUDA compiler identification is NVIDIA 12.1.66 with host compiler GNU 12.2.0
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /opt/apps/cuda/x86_64/12.1.0/default/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (9.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build_gpu
+[ 26%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/compute.cpp.o
+[ 26%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/baselines.cpp.o
+[ 26%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/benchmark.cpp.o
+[ 26%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/aggregator.cpp.o
+[ 33%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/data.cpp.o
+[ 40%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/router.cpp.o
+[ 46%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/worker.cpp.o
+[ 53%] Building CUDA object CMakeFiles/vecscale.dir/src/vecscale/compute_cuda.cu.o
+[ 60%] Linking CXX static library libvecscale.a
+[ 60%] Built target vecscale
+[ 73%] Building CXX object CMakeFiles/run_demo.dir/scripts/run_demo.cpp.o
+[ 73%] Building CXX object CMakeFiles/prepare_dataset.dir/scripts/prepare_dataset.cpp.o
+[ 80%] Linking CUDA device code CMakeFiles/prepare_dataset.dir/cmake_device_link.o
+[ 86%] Linking CXX executable prepare_dataset
+[ 86%] Built target prepare_dataset
+[ 93%] Linking CUDA device code CMakeFiles/run_demo.dir/cmake_device_link.o
+[100%] Linking CXX executable run_demo
+[100%] Built target run_demo
+Dataset written to data/dataset_cpp
+embeddings=100000 x 128
+queries=1000 x 128
+===== GPU backend: 1 shard =====
+=== VecScale Benchmark ===
+corpus=100000  queries=1000  dim=128  shards=1  k=10  backend=cuda
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=7280.763 ms  throughput=137.348 qps
+
+[2/3] Distributed search (1 parallel shards)...
+  scatter+gather=756.784 ms  bulk_qps=1321.381
+  per-query p50=20.354 ms  p95=22.266 ms  throughput=49.778 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/gpu_s1/benchmark_report.txt
+===== GPU backend: 4 shards =====
+=== VecScale Benchmark ===
+corpus=100000  queries=1000  dim=128  shards=4  k=10  backend=cuda
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=7247.694 ms  throughput=137.975 qps
+
+[2/3] Distributed search (4 parallel shards)...
+  scatter+gather=553.674 ms  bulk_qps=1806.118
+  per-query p50=11.051 ms  p95=12.524 ms  throughput=90.646 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/gpu_s4/benchmark_report.txt

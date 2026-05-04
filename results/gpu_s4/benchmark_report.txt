@@ -5,10 +5,10 @@ num_queries     : 1000
 dim             : 128
 num_shards      : 4
 top_k           : 10
-backend         : cpu
-baseline_qps    : 173.668038
-dist_bulk_qps   : 696.092472
-distributed_qps : 330.976387
-p50_latency_ms  : 3.008394
-p95_latency_ms  : 3.054184
+backend         : cuda
+baseline_qps    : 137.974914
+dist_bulk_qps   : 1806.118252
+distributed_qps : 90.646018
+p50_latency_ms  : 11.050891
+p95_latency_ms  : 12.523553
 recall_at_k     : 1.000000

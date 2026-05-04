@@ -1,0 +1,11 @@
+Using Intel compiler + Intel MPI
+-- Checking for module 'mpi-cxx'
+--   Package 'mpi-cxx', required by 'virtual:world', not found
+-- Configuring done (0.9s)
+-- Generating done (0.6s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build_mpi
+[ 69%] Built target vecscale
+[ 84%] Built target prepare_dataset
+[100%] Built target run_demo
+ERROR: run_demo_mpi was not built — MPI was not found by cmake.
+Check that mpicxx is in PATH after module load.

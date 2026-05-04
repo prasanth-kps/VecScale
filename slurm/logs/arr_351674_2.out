@@ -1,0 +1,19 @@
+Reusing existing build in build/
+Dataset written to data/dataset_cpp
+embeddings=120000 x 128
+queries=1200 x 128
+Running shards=4
+=== VecScale Benchmark ===
+corpus=120000  queries=1200  dim=128  shards=4  k=10  backend=cpu
+
+[1/3] Single-node baseline (exact top-k)...
+  elapsed=8302.659 ms  throughput=144.532 qps
+
+[2/3] Distributed search (4 parallel shards)...
+  scatter+gather=2097.435 ms  bulk_qps=572.127
+  per-query p50=3.652 ms  p95=3.695 ms  throughput=272.708 qps
+
+[3/3] Recall vs. exact baseline...
+  recall@10 = 1.0000
+
+Report written to: results/arr_s4/benchmark_report.txt
