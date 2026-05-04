@@ -65,4 +65,7 @@ fi
 build_mpi/prepare_dataset data/dataset_cpp 100000 1000 128 42
 
 echo "===== MPI run: ${SLURM_NTASKS} ranks ====="
-srun build_mpi/run_demo_mpi data/dataset_cpp 10 cpu 0 results
+# OpenMPI 5 + Slurm: PMIx is unavailable on this cluster; Slurm's srun
+# starts 4 singletons instead of one communicating job.
+# Use mpirun (OpenMPI's own launcher) which handles rank setup internally.
+mpirun -n "${SLURM_NTASKS}" build_mpi/run_demo_mpi data/dataset_cpp 10 cpu 0 results
