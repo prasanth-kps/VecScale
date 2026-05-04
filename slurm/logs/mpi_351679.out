@@ -1,0 +1,7 @@
+Using Intel compiler + Intel MPI
+--- MPI wrapper check ---
+mpicxx   NOT found
+mpiicpx  NOT found
+mpicc    NOT found
+-------------------------
+ERROR: No MPI C++ wrapper found in PATH. Cannot build run_demo_mpi.

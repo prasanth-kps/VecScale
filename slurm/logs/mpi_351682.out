@@ -1,0 +1,73 @@
+Toolchain: gnu15/15.1.0 + openmpi5/5.0.8
+--- MPI wrapper check ---
+/opt/ohpc/pub/mpi/openmpi5-gnu15/5.0.8/bin/mpicxx
+g++ (GCC) 15.1.0
+-------------------------
+Using: /opt/ohpc/pub/mpi/openmpi5-gnu15/5.0.8/bin/mpicxx
+-- The CXX compiler identification is GNU 15.1.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /opt/ohpc/pub/compiler/gcc/15.1.0/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Configuring done (1.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /srv/home/jannupalli/VecScale/build_mpi
+[ 13%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/baselines.cpp.o
+[ 13%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/aggregator.cpp.o
+[ 20%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/benchmark.cpp.o
+[ 26%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/compute.cpp.o
+[ 33%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/data.cpp.o
+[ 40%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/router.cpp.o
+[ 46%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/worker.cpp.o
+[ 53%] Building CXX object CMakeFiles/vecscale.dir/src/vecscale/compute_cuda_stub.cpp.o
+[ 60%] Linking CXX static library libvecscale.a
+[ 60%] Built target vecscale
+[ 73%] Building CXX object CMakeFiles/run_demo.dir/scripts/run_demo.cpp.o
+[ 73%] Building CXX object CMakeFiles/prepare_dataset.dir/scripts/prepare_dataset.cpp.o
+[ 80%] Linking CXX executable prepare_dataset
+[ 80%] Built target prepare_dataset
+[ 86%] Building CXX object CMakeFiles/run_demo_mpi.dir/scripts/run_demo_mpi.cpp.o
+[ 93%] Linking CXX executable run_demo
+[ 93%] Built target run_demo
+[100%] Linking CXX executable run_demo_mpi
+[100%] Built target run_demo_mpi
+Dataset written to data/dataset_cpp
+embeddings=100000 x 128
+queries=1000 x 128
+===== MPI run: 4 ranks =====
+=== MPI Benchmark Summary ===
+MPI ranks      : 1
+Backend        : cpu
+Queries        : 1000
+Baseline qps   : 157.184
+Distributed qps: 158.552
+recall@10        : 1.0000
+Report written to: results/benchmark_report_mpi.txt
+=== MPI Benchmark Summary ===
+MPI ranks      : 1
+Backend        : cpu
+Queries        : 1000
+Baseline qps   : 156.426
+Distributed qps: 158.971
+recall@10        : 1.0000
+Report written to: results/benchmark_report_mpi.txt
+=== MPI Benchmark Summary ===
+MPI ranks      : 1
+Backend        : cpu
+Queries        : 1000
+Baseline qps   : 156.379
+Distributed qps: 158.377
+recall@10        : 1.0000
+Report written to: results/benchmark_report_mpi.txt
+=== MPI Benchmark Summary ===
+MPI ranks      : 1
+Backend        : cpu
+Queries        : 1000
+Baseline qps   : 156.068
+Distributed qps: 158.424
+recall@10        : 1.0000
+Report written to: results/benchmark_report_mpi.txt

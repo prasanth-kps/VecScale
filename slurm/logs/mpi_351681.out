@@ -1,0 +1,30 @@
+=== Available MPI-related modules ===
+  compiler: compiler/2025.0.4
+  compiler-intel-llvm: compiler-intel-llvm/2025.0.4
+  compiler-rt: compiler-rt/2025.0.4
+    GNU Compiler Family (C/C++/Fortran for x86_64)
+  gromacs: gromacs/gnu15-ompi5.0.8-cu13.0/2025.4, ...
+  impi: impi/2021.14
+    Intel MPI Library (C/C++/Fortran for x86_64)
+    Intel(R) Compiler Family (C/C++/Fortran for x86_64)
+  mpi: mpi/2021.14
+    Intel(R) MPI Library
+  mpich: mpich/3.4.3-ucx
+    MPICH MPI implementation
+  nvidia/nvhpc-byo-compiler: nvidia/nvhpc-byo-compiler/21.5, ...
+  nvidia/nvhpc-nompi: nvidia/nvhpc-nompi/21.5, nvidia/nvhpc-nompi/22.3, ...
+  nvidia/nvhpc-openmpi3: nvidia/nvhpc-openmpi3/23.11, ...
+  openmpi5: openmpi5/5.0.8
+    A powerful implementation of MPI/SHMEM
+    job launch utility for multiple MPI families
+    Graph, mesh and hypergraph partitioning library using MPI
+  py3-mpi4py: py3-mpi4py/3.1.5
+    Python bindings for the Message Passing Interface (MPI) standard.
+=== (end module list) ===
+Compiler: Intel or GCC fallback
+--- MPI wrapper check ---
+mpicxx  NOT found
+mpicc   NOT found
+-------------------------
+ERROR: mpicxx not in PATH even after module load.
+Please run 'module spider mpi' on the login node to find the correct module name.

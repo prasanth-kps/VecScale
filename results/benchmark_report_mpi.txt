@@ -1,0 +1,10 @@
+VecScale MPI Benchmark Report
+==============================
+mpi_ranks       : 1
+corpus_size     : 100000
+num_queries     : 1000
+top_k           : 10
+backend         : cpu
+baseline_qps    : 156.378981
+distributed_qps : 158.376875
+recall_at_k     : 1.000000
